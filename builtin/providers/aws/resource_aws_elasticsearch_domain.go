@@ -271,7 +271,7 @@ func resourceAwsElasticSearchDomainRead(d *schema.ResourceData, meta interface{}
 		return err
 	}
 	d.Set("domain_id", ds.DomainId)
-	d.Set("do main_name", ds.DomainName)
+	d.Set("domain_name", ds.DomainName)
 	d.Set("elasticsearch_version", ds.ElasticsearchVersion)
 	if ds.Endpoint != nil {
 		d.Set("endpoint", *ds.Endpoint)
