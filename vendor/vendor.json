@@ -765,6 +765,14 @@
 			"versionExact": "v1.6.18"
 		},
 		{
+			"checksumSHA1": "MTlPViWUHDJ1wVPusVAeFSZWU2k=",
+			"path": "github.com/aws/aws-sdk-go/service/codebuild",
+			"revision": "918c42e2bcdb277aa821401c906e88254501bdf4",
+			"revisionTime": "2016-12-01T20:26:07Z",
+			"version": "v1.5.13",
+			"versionExact": "v1.5.13"
+		},
+		{
 			"checksumSHA1": "lHCqaKjIV/AO1B8nxDUyM0AW/+0=",
 			"path": "github.com/aws/aws-sdk-go/service/codecommit",
 			"revision": "3f8f870ec9939e32b3372abf74d24e468bcd285d",
@@ -787,6 +795,14 @@
 			"revisionTime": "2017-01-27T01:21:58Z",
 			"version": "v1.6.18",
 			"versionExact": "v1.6.18"
+		},
+		{
+			"checksumSHA1": "xKUp9QOvMJOavwFwnbLcqq1FxOE=",
+			"path": "github.com/aws/aws-sdk-go/service/databasemigrationservice",
+			"revision": "f82d132783af109928d89d526ccc8d9fc320639e",
+			"revisionTime": "2017-01-19T23:36:13Z",
+			"version": "v1.6.14",
+			"versionExact": "v1.6.14"
 		},
 		{
 			"checksumSHA1": "W29S9x3pVL3xha1nsGqGtSQtGwA=",
@@ -1586,15 +1602,15 @@
 			"checksumSHA1": "FUiF2WLrih0JdHsUTMMDz3DRokw=",
 			"comment": "20141209094003-92-g95fa852",
 			"path": "github.com/hashicorp/atlas-go/archive",
-			"revision": "8e45a6c8b2de014db767a42c3ee777f101e11624",
-			"revisionTime": "2016-08-24T17:34:10Z"
+			"revision": "1792bd8de119ba49b17fd8d3c3c1f488ec613e62",
+			"revisionTime": "2016-11-07T20:49:10Z"
 		},
 		{
-			"checksumSHA1": "yylO3hSRKd0T4mveT9ho2OSARwU=",
+			"checksumSHA1": "lrfddRS4/LDKnF0sAbyZ59eUSjo=",
 			"comment": "20141209094003-92-g95fa852",
 			"path": "github.com/hashicorp/atlas-go/v1",
-			"revision": "9be9a611a15ba2f857a99b332fd966896867299a",
-			"revisionTime": "2016-07-26T16:33:11Z"
+			"revision": "1792bd8de119ba49b17fd8d3c3c1f488ec613e62",
+			"revisionTime": "2016-11-07T20:49:10Z"
 		},
 		{
 			"checksumSHA1": "ZY6NCrR80zUmtOtPtKffbmFxRWw=",
