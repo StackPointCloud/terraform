@@ -36,23 +36,23 @@ func validateElastiCacheClusterId(v interface{}, k string) (ws []string, errors 
 	value := v.(string)
 	if (len(value) < 1) || (len(value) > 20) {
 		errors = append(errors, fmt.Errorf(
-			"%q must contain from 1 to 20 alphanumeric characters or hyphens", k))
+			"%q (%q) must contain from 1 to 20 alphanumeric characters or hyphens", k, value))
 	}
 	if !regexp.MustCompile(`^[0-9a-z-]+$`).MatchString(value) {
 		errors = append(errors, fmt.Errorf(
-			"only lowercase alphanumeric characters and hyphens allowed in %q", k))
+			"only lowercase alphanumeric characters and hyphens allowed in %q (%q)", k, value))
 	}
 	if !regexp.MustCompile(`^[a-z]`).MatchString(value) {
 		errors = append(errors, fmt.Errorf(
-			"first character of %q must be a letter", k))
+			"first character of %q (%q) must be a letter", k, value))
 	}
 	if regexp.MustCompile(`--`).MatchString(value) {
 		errors = append(errors, fmt.Errorf(
-			"%q cannot contain two consecutive hyphens", k))
+			"%q (%q) cannot contain two consecutive hyphens", k, value))
 	}
 	if regexp.MustCompile(`-$`).MatchString(value) {
 		errors = append(errors, fmt.Errorf(
-			"%q cannot end with a hyphen", k))
+			"%q (%q) cannot end with a hyphen", k, value))
 	}
 	return
 }
@@ -641,9 +641,10 @@ func validateSecurityRuleType(v interface{}, k string) (ws []string, errors []er
 func validateOnceAWeekWindowFormat(v interface{}, k string) (ws []string, errors []error) {
 	// valid time format is "ddd:hh24:mi"
 	validTimeFormat := "(sun|mon|tue|wed|thu|fri|sat):([0-1][0-9]|2[0-3]):([0-5][0-9])"
+	validTimeFormatConsolidated := "^(" + validTimeFormat + "-" + validTimeFormat + "|)$"
 
 	value := strings.ToLower(v.(string))
-	if !regexp.MustCompile(validTimeFormat + "-" + validTimeFormat).MatchString(value) {
+	if !regexp.MustCompile(validTimeFormatConsolidated).MatchString(value) {
 		errors = append(errors, fmt.Errorf(
 			"%q must satisfy the format of \"ddd:hh24:mi-ddd:hh24:mi\".", k))
 	}
@@ -653,9 +654,10 @@ func validateOnceAWeekWindowFormat(v interface{}, k string) (ws []string, errors
 func validateOnceADayWindowFormat(v interface{}, k string) (ws []string, errors []error) {
 	// valid time format is "hh24:mi"
 	validTimeFormat := "([0-1][0-9]|2[0-3]):([0-5][0-9])"
+	validTimeFormatConsolidated := "^(" + validTimeFormat + "-" + validTimeFormat + "|)$"
 
 	value := v.(string)
-	if !regexp.MustCompile(validTimeFormat + "-" + validTimeFormat).MatchString(value) {
+	if !regexp.MustCompile(validTimeFormatConsolidated).MatchString(value) {
 		errors = append(errors, fmt.Errorf(
 			"%q must satisfy the format of \"hh24:mi-hh24:mi\".", k))
 	}
@@ -889,5 +891,42 @@ func validateAppautoscalingServiceNamespace(v interface{}, k string) (ws []strin
 	if !namespaces[value] {
 		errors = append(errors, fmt.Errorf("%q must be a valid service namespace value: %q", k, value))
 	}
+	return
+}
+
+func validateConfigRuleSourceOwner(v interface{}, k string) (ws []string, errors []error) {
+	validOwners := []string{
+		"CUSTOM_LAMBDA",
+		"AWS",
+	}
+	owner := v.(string)
+	for _, o := range validOwners {
+		if owner == o {
+			return
+		}
+	}
+	errors = append(errors, fmt.Errorf(
+		"%q contains an invalid owner %q. Valid owners are %q.",
+		k, owner, validOwners))
+	return
+}
+
+func validateConfigExecutionFrequency(v interface{}, k string) (ws []string, errors []error) {
+	validFrequencies := []string{
+		"One_Hour",
+		"Three_Hours",
+		"Six_Hours",
+		"Twelve_Hours",
+		"TwentyFour_Hours",
+	}
+	frequency := v.(string)
+	for _, f := range validFrequencies {
+		if frequency == f {
+			return
+		}
+	}
+	errors = append(errors, fmt.Errorf(
+		"%q contains an invalid freqency %q. Valid frequencies are %q.",
+		k, frequency, validFrequencies))
 	return
 }

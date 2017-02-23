@@ -17,7 +17,7 @@ func resourceRancherRegistryCredential() *schema.Resource {
 		Update: resourceRancherRegistryCredentialUpdate,
 		Delete: resourceRancherRegistryCredentialDelete,
 		Importer: &schema.ResourceImporter{
-			State: schema.ImportStatePassthrough,
+			State: resourceRancherRegistryCredentialImport,
 		},
 
 		Schema: map[string]*schema.Schema{
@@ -230,6 +230,25 @@ func resourceRancherRegistryCredentialDelete(d *schema.ResourceData, meta interf
 
 	d.SetId("")
 	return nil
+}
+
+func resourceRancherRegistryCredentialImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+	regID, resourceID := splitID(d.Id())
+	d.SetId(resourceID)
+	if regID != "" {
+		d.Set("registry_id", regID)
+	} else {
+		client, err := meta.(*Config).GlobalClient()
+		if err != nil {
+			return []*schema.ResourceData{}, err
+		}
+		cred, err := client.RegistryCredential.ById(d.Id())
+		if err != nil {
+			return []*schema.ResourceData{}, err
+		}
+		d.Set("registry_id", cred.RegistryId)
+	}
+	return []*schema.ResourceData{d}, nil
 }
 
 // RegistryCredentialStateRefreshFunc returns a resource.StateRefreshFunc that is used to watch

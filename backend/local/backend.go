@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/hashicorp/errwrap"
 	"github.com/hashicorp/terraform/backend"
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/state"
@@ -33,6 +32,9 @@ type Local struct {
 	StatePath       string
 	StateOutPath    string
 	StateBackupPath string
+
+	// we only want to create a single instance of the local state
+	state state.State
 
 	// ContextOpts are the base context options to set when initializing a
 	// Terraform context. Many of these will be overridden or merged by
@@ -100,15 +102,14 @@ func (b *Local) State() (state.State, error) {
 		return b.Backend.State()
 	}
 
+	if b.state != nil {
+		return b.state, nil
+	}
+
 	// Otherwise, we need to load the state.
 	var s state.State = &state.LocalState{
 		Path:    b.StatePath,
 		PathOut: b.StateOutPath,
-	}
-
-	// Load the state as a sanity check
-	if err := s.RefreshState(); err != nil {
-		return nil, errwrap.Wrapf("Error reading local state: {{err}}", err)
 	}
 
 	// If we are backing up the state, wrap it
@@ -119,6 +120,7 @@ func (b *Local) State() (state.State, error) {
 		}
 	}
 
+	b.state = s
 	return s, nil
 }
 

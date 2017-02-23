@@ -16,7 +16,7 @@ func resourceRancherRegistrationToken() *schema.Resource {
 		Read:   resourceRancherRegistrationTokenRead,
 		Delete: resourceRancherRegistrationTokenDelete,
 		Importer: &schema.ResourceImporter{
-			State: schema.ImportStatePassthrough,
+			State: resourceRancherRegistrationTokenImport,
 		},
 
 		Schema: map[string]*schema.Schema{
@@ -202,6 +202,25 @@ func resourceRancherRegistrationTokenDelete(d *schema.ResourceData, meta interfa
 
 	d.SetId("")
 	return nil
+}
+
+func resourceRancherRegistrationTokenImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+	envID, resourceID := splitID(d.Id())
+	d.SetId(resourceID)
+	if envID != "" {
+		d.Set("environment_id", envID)
+	} else {
+		client, err := meta.(*Config).GlobalClient()
+		if err != nil {
+			return []*schema.ResourceData{}, err
+		}
+		token, err := client.RegistrationToken.ById(d.Id())
+		if err != nil {
+			return []*schema.ResourceData{}, err
+		}
+		d.Set("environment_id", token.AccountId)
+	}
+	return []*schema.ResourceData{d}, nil
 }
 
 // RegistrationTokenStateRefreshFunc returns a resource.StateRefreshFunc that is used to watch

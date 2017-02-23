@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform/helper/copy"
+	"github.com/hashicorp/terraform/state"
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/mitchellh/cli"
 )
@@ -102,6 +103,9 @@ func TestMetaBackend_emptyWithDefaultState(t *testing.T) {
 	if err != nil {
 		t.Fatalf("bad: %s", err)
 	}
+	if err := s.RefreshState(); err != nil {
+		t.Fatalf("err: %s", err)
+	}
 	if actual := s.State().String(); actual != testState().String() {
 		t.Fatalf("bad: %s", actual)
 	}
@@ -171,6 +175,9 @@ func TestMetaBackend_emptyWithExplicitState(t *testing.T) {
 	s, err := b.State()
 	if err != nil {
 		t.Fatalf("bad: %s", err)
+	}
+	if err := s.RefreshState(); err != nil {
+		t.Fatalf("err: %s", err)
 	}
 	if actual := s.State().String(); actual != testState().String() {
 		t.Fatalf("bad: %s", actual)
@@ -353,6 +360,7 @@ func TestMetaBackend_configureNewWithState(t *testing.T) {
 	if state == nil {
 		t.Fatal("state is nil")
 	}
+
 	if state.Lineage != "backend-new-migrate" {
 		t.Fatalf("bad: %#v", state)
 	}
@@ -2207,6 +2215,12 @@ func TestMetaBackend_planLocalStatePath(t *testing.T) {
 
 	// Create an alternate output path
 	statePath := "foo.tfstate"
+
+	// put a initial state there that needs to be backed up
+	err := (&state.LocalState{Path: statePath}).WriteState(original)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	// Setup the meta
 	m := testMetaBackend(t, nil)
