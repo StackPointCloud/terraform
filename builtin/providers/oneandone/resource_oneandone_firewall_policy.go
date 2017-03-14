@@ -263,22 +263,6 @@ func getRules(d *schema.ResourceData) []oneandone.FirewallPolicyRule {
 	return rules
 }
 
-func getIps(d *schema.ResourceData) []string {
-	var ids []string
-
-	if raw, ok := d.GetOk("ips"); ok {
-		rawIps := raw.([]interface{})
-
-		for _, raw := range rawIps {
-			ip := raw.(map[string]interface{})
-
-			ids = append(ids, ip["id"].(string))
-		}
-	}
-
-	return ids
-}
-
 func difference(oldV, newV []interface{}) (toreturn []interface{}) {
 	var (
 		lenMin  int
