@@ -121,15 +121,13 @@ func resourceOneandOneVPNRead(d *schema.ResourceData, meta interface{}) error {
 		download_path = raw.(string)
 	}
 
-	path, fileName, err := writeCofnig(vpn, download_path, base64_str)
+	_, _, err = writeCofnig(vpn, download_path, base64_str)
 	if err != nil {
 		return err
 	}
 
 	d.Set("name", vpn.Name)
 	d.Set("description", vpn.Description)
-	d.Set("download_path", path)
-	d.Set("file_name", fileName)
 	d.Set("datacenter", vpn.Datacenter.CountryCode)
 
 	return nil
