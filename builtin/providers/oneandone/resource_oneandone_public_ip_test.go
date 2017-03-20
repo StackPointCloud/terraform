@@ -91,7 +91,7 @@ func testAccCheckOneandonePublicIpExists(n string, public_ip *oneandone.PublicIp
 		found_public_ip, err := api.GetPublicIp(rs.Primary.ID)
 
 		if err != nil {
-			return fmt.Errorf("Error occured while fetching DC: %s", rs.Primary.ID)
+			return fmt.Errorf("Error occured while fetching public IP: %s", rs.Primary.ID)
 		}
 		if found_public_ip.Id != rs.Primary.ID {
 			return fmt.Errorf("Record not found")

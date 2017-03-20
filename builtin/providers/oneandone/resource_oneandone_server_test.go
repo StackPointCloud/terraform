@@ -91,7 +91,7 @@ func testAccCheckOneandoneServerExists(n string, server *oneandone.Server) resou
 		found_server, err := api.GetServer(rs.Primary.ID)
 
 		if err != nil {
-			return fmt.Errorf("Error occured while fetching DC: %s", rs.Primary.ID)
+			return fmt.Errorf("Error occured while fetching Server: %s", rs.Primary.ID)
 		}
 		if found_server.Id != rs.Primary.ID {
 			return fmt.Errorf("Record not found")
