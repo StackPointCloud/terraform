@@ -20,9 +20,5 @@ func (c *Config) Client() (*Config, error) {
 		c.API = oneandone.New(token, oneandone.BaseUrl)
 	}
 
-	if c.Retries == 0 {
-		c.Retries = 50
-	}
-
 	return c, nil
 }

@@ -124,6 +124,7 @@ func resourceOneandOnePublicIpDelete(d *schema.ResourceData, meta interface{}) e
 
 	err = config.API.WaitUntilDeleted(ip)
 	if err != nil {
+
 		return err
 	}
 

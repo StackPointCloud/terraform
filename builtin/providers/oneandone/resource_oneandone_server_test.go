@@ -13,8 +13,8 @@ import (
 func TestAccOneandoneServer_Basic(t *testing.T) {
 	var server oneandone.Server
 
-	name := "test"
-	name_updated := "test1"
+	name := "test_server"
+	name_updated := "test_server_renamed"
 
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
@@ -24,7 +24,7 @@ func TestAccOneandoneServer_Basic(t *testing.T) {
 		CheckDestroy: testAccCheckDOneandoneServerDestroyCheck,
 		Steps: []resource.TestStep{
 			resource.TestStep{
-				Config: fmt.Sprintf(testAccCheckOneandoneServer_basic, name),
+				Config: fmt.Sprintf(testAccCheckOneandoneServer_basic, name, name),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckOneandoneServerExists("oneandone_server.server", &server),
 					testAccCheckOneandoneServerAttributes("oneandone_server.server", name),
@@ -32,7 +32,7 @@ func TestAccOneandoneServer_Basic(t *testing.T) {
 				),
 			},
 			resource.TestStep{
-				Config: fmt.Sprintf(testAccCheckOneandoneServer_update, name_updated),
+				Config: fmt.Sprintf(testAccCheckOneandoneServer_basic, name_updated, name_updated),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckOneandoneServerExists("oneandone_server.server", &server),
 					testAccCheckOneandoneServerAttributes("oneandone_server.server", name_updated),
@@ -45,7 +45,7 @@ func TestAccOneandoneServer_Basic(t *testing.T) {
 
 func testAccCheckDOneandoneServerDestroyCheck(s *terraform.State) error {
 	for _, rs := range s.RootModule().Resources {
-		if rs.Type != "oneandone_public_ip" {
+		if rs.Type != "oneandone_server" {
 			continue
 		}
 
@@ -105,34 +105,16 @@ func testAccCheckOneandoneServerExists(n string, server *oneandone.Server) resou
 const testAccCheckOneandoneServer_basic = `
 resource "oneandone_server" "server" {
   name = "%s"
-  description = "ttt"
+  description = "%s"
   image = "ubuntu"
   datacenter = "GB"
   vcores = 1
   cores_per_processor = 1
   ram = 2
-  password = "K3tTj8G14a3EgKyNeeiY"
+  password = "Kv40kd8PQb"
   hdds = [
     {
-      disk_size = 60
-      is_main = true
-    }
-  ]
-}`
-
-const testAccCheckOneandoneServer_update = `
-resource "oneandone_server" "server" {
-  name = "%s"
-  description = "ttt"
-  image = "ubuntu"
-  datacenter = "GB"
-  vcores = 1
-  cores_per_processor = 1
-  ram = 2
-  password = "K3tTj8G14a3EgKyNeeiY"
-  hdds = [
-    {
-      disk_size = 60
+      disk_size = 20
       is_main = true
     }
   ]

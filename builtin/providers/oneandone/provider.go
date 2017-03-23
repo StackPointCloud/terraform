@@ -23,6 +23,7 @@ func Provider() terraform.ResourceProvider {
 			"retries": {
 				Type:     schema.TypeInt,
 				Optional: true,
+				Default:  50,
 			},
 			"endpoint": {
 				Type:     schema.TypeString,

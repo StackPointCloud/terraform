@@ -488,6 +488,7 @@ func resourceOneandOneServerDelete(d *schema.ResourceData, meta interface{}) err
 	err = config.API.WaitUntilDeleted(server)
 
 	if err != nil {
+		log.Println("[DEBUG] ************ ERROR While waiting ************")
 		return err
 	}
 	return nil

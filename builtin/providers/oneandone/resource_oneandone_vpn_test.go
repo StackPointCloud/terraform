@@ -45,7 +45,7 @@ func TestAccOneandoneVpn_Basic(t *testing.T) {
 
 func testAccCheckDOneandoneVPNDestroyCheck(s *terraform.State) error {
 	for _, rs := range s.RootModule().Resources {
-		if rs.Type != "oneandone_public_ip" {
+		if rs.Type != "oneandone_server" {
 			continue
 		}
 

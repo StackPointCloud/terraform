@@ -13,8 +13,8 @@ import (
 func TestAccOneandonePublicIp_Basic(t *testing.T) {
 	var public_ip oneandone.PublicIp
 
-	reverse_dns := "test.1and1.com"
-	reverse_dns_updated := "test1.1and1.com"
+	reverse_dns := "example.de"
+	reverse_dns_updated := "example.ba"
 
 	resource.Test(t, resource.TestCase{
 		PreCheck: func() {
@@ -32,7 +32,7 @@ func TestAccOneandonePublicIp_Basic(t *testing.T) {
 				),
 			},
 			resource.TestStep{
-				Config: fmt.Sprintf(testAccCheckOneandonePublicIp_update, reverse_dns_updated),
+				Config: fmt.Sprintf(testAccCheckOneandonePublicIp_basic, reverse_dns_updated),
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckOneandonePublicIpExists("oneandone_public_ip.ip", &public_ip),
 					testAccCheckOneandonePublicIpAttributes("oneandone_public_ip.ip", reverse_dns_updated),
@@ -103,13 +103,6 @@ func testAccCheckOneandonePublicIpExists(n string, public_ip *oneandone.PublicIp
 }
 
 const testAccCheckOneandonePublicIp_basic = `
-resource "oneandone_public_ip" "ip" {
-	"ip_type" = "IPV4"
-	"reverse_dns" = "%s"
-	"datacenter" = "GB"
-}`
-
-const testAccCheckOneandonePublicIp_update = `
 resource "oneandone_public_ip" "ip" {
 	"ip_type" = "IPV4"
 	"reverse_dns" = "%s"
