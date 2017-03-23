@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
 	"os"
+	"time"
 )
 
 func TestAccOneandoneServer_Basic(t *testing.T) {
@@ -26,6 +27,10 @@ func TestAccOneandoneServer_Basic(t *testing.T) {
 			resource.TestStep{
 				Config: fmt.Sprintf(testAccCheckOneandoneServer_basic, name, name),
 				Check: resource.ComposeTestCheckFunc(
+					func(*terraform.State) error {
+						time.Sleep(10 * time.Second)
+						return nil
+					},
 					testAccCheckOneandoneServerExists("oneandone_server.server", &server),
 					testAccCheckOneandoneServerAttributes("oneandone_server.server", name),
 					resource.TestCheckResourceAttr("oneandone_server.server", "name", name),
@@ -34,6 +39,10 @@ func TestAccOneandoneServer_Basic(t *testing.T) {
 			resource.TestStep{
 				Config: fmt.Sprintf(testAccCheckOneandoneServer_basic, name_updated, name_updated),
 				Check: resource.ComposeTestCheckFunc(
+					func(*terraform.State) error {
+						time.Sleep(10 * time.Second)
+						return nil
+					},
 					testAccCheckOneandoneServerExists("oneandone_server.server", &server),
 					testAccCheckOneandoneServerAttributes("oneandone_server.server", name_updated),
 					resource.TestCheckResourceAttr("oneandone_server.server", "name", name_updated),

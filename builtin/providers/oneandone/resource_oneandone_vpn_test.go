@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
 	"os"
+	"time"
 )
 
 func TestAccOneandoneVpn_Basic(t *testing.T) {
@@ -26,6 +27,10 @@ func TestAccOneandoneVpn_Basic(t *testing.T) {
 			resource.TestStep{
 				Config: fmt.Sprintf(testAccCheckOneandoneVPN_basic, name),
 				Check: resource.ComposeTestCheckFunc(
+					func(*terraform.State) error {
+						time.Sleep(10 * time.Second)
+						return nil
+					},
 					testAccCheckOneandoneVPNExists("oneandone_vpn.vpn", &server),
 					testAccCheckOneandoneVPNAttributes("oneandone_vpn.vpn", name),
 					resource.TestCheckResourceAttr("oneandone_vpn.vpn", "name", name),
@@ -34,6 +39,10 @@ func TestAccOneandoneVpn_Basic(t *testing.T) {
 			resource.TestStep{
 				Config: fmt.Sprintf(testAccCheckOneandoneVPN_basic, name_updated),
 				Check: resource.ComposeTestCheckFunc(
+					func(*terraform.State) error {
+						time.Sleep(10 * time.Second)
+						return nil
+					},
 					testAccCheckOneandoneVPNExists("oneandone_vpn.vpn", &server),
 					testAccCheckOneandoneVPNAttributes("oneandone_vpn.vpn", name_updated),
 					resource.TestCheckResourceAttr("oneandone_vpn.vpn", "name", name_updated),

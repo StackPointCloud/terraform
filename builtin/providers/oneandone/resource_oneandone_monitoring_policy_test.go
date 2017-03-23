@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
 	"os"
+	"time"
 )
 
 func TestAccOneandoneMonitoringPolicy_Basic(t *testing.T) {
@@ -26,6 +27,10 @@ func TestAccOneandoneMonitoringPolicy_Basic(t *testing.T) {
 			resource.TestStep{
 				Config: fmt.Sprintf(testAccCheckOneandoneMonitoringPolicy_basic, name),
 				Check: resource.ComposeTestCheckFunc(
+					func(*terraform.State) error {
+						time.Sleep(10 * time.Second)
+						return nil
+					},
 					testAccCheckOneandoneMonitoringPolicyExists("oneandone_monitoring_policy.mp", &mp),
 					testAccCheckOneandoneMonitoringPolicyAttributes("oneandone_monitoring_policy.mp", name),
 					resource.TestCheckResourceAttr("oneandone_monitoring_policy.mp", "name", name),
@@ -34,6 +39,10 @@ func TestAccOneandoneMonitoringPolicy_Basic(t *testing.T) {
 			resource.TestStep{
 				Config: fmt.Sprintf(testAccCheckOneandoneMonitoringPolicy_basic, name_updated),
 				Check: resource.ComposeTestCheckFunc(
+					func(*terraform.State) error {
+						time.Sleep(10 * time.Second)
+						return nil
+					},
 					testAccCheckOneandoneMonitoringPolicyExists("oneandone_monitoring_policy.mp", &mp),
 					testAccCheckOneandoneMonitoringPolicyAttributes("oneandone_monitoring_policy.mp", name_updated),
 					resource.TestCheckResourceAttr("oneandone_monitoring_policy.mp", "name", name_updated),

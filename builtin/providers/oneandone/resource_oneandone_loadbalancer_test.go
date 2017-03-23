@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
 	"os"
+	"time"
 )
 
 func TestAccOneandoneLoadbalancer_Basic(t *testing.T) {
@@ -26,6 +27,10 @@ func TestAccOneandoneLoadbalancer_Basic(t *testing.T) {
 			resource.TestStep{
 				Config: fmt.Sprintf(testAccCheckOneandoneLoadbalancer_basic, name),
 				Check: resource.ComposeTestCheckFunc(
+					func(*terraform.State) error {
+						time.Sleep(10 * time.Second)
+						return nil
+					},
 					testAccCheckOneandoneLoadbalancerExists("oneandone_loadbalancer.lb", &lb),
 					testAccCheckOneandoneLoadbalancerAttributes("oneandone_loadbalancer.lb", name),
 					resource.TestCheckResourceAttr("oneandone_loadbalancer.lb", "name", name),
@@ -34,6 +39,10 @@ func TestAccOneandoneLoadbalancer_Basic(t *testing.T) {
 			resource.TestStep{
 				Config: fmt.Sprintf(testAccCheckOneandoneLoadbalancer_basic, name_updated),
 				Check: resource.ComposeTestCheckFunc(
+					func(*terraform.State) error {
+						time.Sleep(10 * time.Second)
+						return nil
+					},
 					testAccCheckOneandoneLoadbalancerExists("oneandone_loadbalancer.lb", &lb),
 					testAccCheckOneandoneLoadbalancerAttributes("oneandone_loadbalancer.lb", name_updated),
 					resource.TestCheckResourceAttr("oneandone_loadbalancer.lb", "name", name_updated),

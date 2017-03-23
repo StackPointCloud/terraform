@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
 	"os"
+	"time"
 )
 
 func TestAccOneandonePublicIp_Basic(t *testing.T) {
@@ -26,6 +27,10 @@ func TestAccOneandonePublicIp_Basic(t *testing.T) {
 			resource.TestStep{
 				Config: fmt.Sprintf(testAccCheckOneandonePublicIp_basic, reverse_dns),
 				Check: resource.ComposeTestCheckFunc(
+					func(*terraform.State) error {
+						time.Sleep(10 * time.Second)
+						return nil
+					},
 					testAccCheckOneandonePublicIpExists("oneandone_public_ip.ip", &public_ip),
 					testAccCheckOneandonePublicIpAttributes("oneandone_public_ip.ip", reverse_dns),
 					resource.TestCheckResourceAttr("oneandone_public_ip.ip", "reverse_dns", reverse_dns),
@@ -34,6 +39,10 @@ func TestAccOneandonePublicIp_Basic(t *testing.T) {
 			resource.TestStep{
 				Config: fmt.Sprintf(testAccCheckOneandonePublicIp_basic, reverse_dns_updated),
 				Check: resource.ComposeTestCheckFunc(
+					func(*terraform.State) error {
+						time.Sleep(10 * time.Second)
+						return nil
+					},
 					testAccCheckOneandonePublicIpExists("oneandone_public_ip.ip", &public_ip),
 					testAccCheckOneandonePublicIpAttributes("oneandone_public_ip.ip", reverse_dns_updated),
 					resource.TestCheckResourceAttr("oneandone_public_ip.ip", "reverse_dns", reverse_dns_updated),

@@ -8,6 +8,7 @@ import (
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/terraform"
 	"os"
+	"time"
 )
 
 func TestAccOneandoneFirewall_Basic(t *testing.T) {
@@ -25,7 +26,12 @@ func TestAccOneandoneFirewall_Basic(t *testing.T) {
 		Steps: []resource.TestStep{
 			resource.TestStep{
 				Config: fmt.Sprintf(testAccCheckOneandoneFirewall_basic, name),
+
 				Check: resource.ComposeTestCheckFunc(
+					func(*terraform.State) error {
+						time.Sleep(10 * time.Second)
+						return nil
+					},
 					testAccCheckOneandoneFirewallExists("oneandone_firewall_policy.fw", &firewall),
 					testAccCheckOneandoneFirewallAttributes("oneandone_firewall_policy.fw", name),
 					resource.TestCheckResourceAttr("oneandone_firewall_policy.fw", "name", name),
@@ -33,7 +39,12 @@ func TestAccOneandoneFirewall_Basic(t *testing.T) {
 			},
 			resource.TestStep{
 				Config: fmt.Sprintf(testAccCheckOneandoneFirewall_basic, name_updated),
+
 				Check: resource.ComposeTestCheckFunc(
+					func(*terraform.State) error {
+						time.Sleep(10 * time.Second)
+						return nil
+					},
 					testAccCheckOneandoneFirewallExists("oneandone_firewall_policy.fw", &firewall),
 					testAccCheckOneandoneFirewallAttributes("oneandone_firewall_policy.fw", name_updated),
 					resource.TestCheckResourceAttr("oneandone_firewall_policy.fw", "name", name_updated),
