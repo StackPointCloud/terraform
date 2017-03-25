@@ -315,6 +315,10 @@ func resourceOneandOneLoadbalancerRead(d *schema.ResourceData, meta interface{})
 
 	ss, err := config.API.GetLoadBalancer(d.Id())
 	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			d.SetId("")
+			return nil
+		}
 		return err
 	}
 

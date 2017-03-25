@@ -3,6 +3,7 @@ package oneandone
 import (
 	"github.com/1and1/oneandone-cloudserver-sdk-go"
 	"github.com/hashicorp/terraform/helper/schema"
+	"strings"
 )
 
 func resourceOneandOneMonitoringPolicy() *schema.Resource {
@@ -495,6 +496,10 @@ func resourceOneandOneMonitoringPolicyRead(d *schema.ResourceData, meta interfac
 
 	mp, err := config.API.GetMonitoringPolicy(d.Id())
 	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			d.SetId("")
+			return nil
+		}
 		return err
 	}
 

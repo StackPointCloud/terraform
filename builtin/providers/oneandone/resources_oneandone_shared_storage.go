@@ -32,7 +32,7 @@ func resourceOneandOneSharedStorage() *schema.Resource {
 			},
 			"datacenter": {
 				Type:     schema.TypeString,
-				Optional: true,
+				Required: true,
 			},
 			"storage_servers": {
 				Type: schema.TypeList,
@@ -212,6 +212,10 @@ func resourceOneandOneSharedStorageRead(d *schema.ResourceData, meta interface{}
 
 	ss, err := config.API.GetSharedStorage(d.Id())
 	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			d.SetId("")
+			return nil
+		}
 		return err
 	}
 

@@ -269,6 +269,10 @@ func resourceOneandOneServerRead(d *schema.ResourceData, meta interface{}) error
 	server, err := config.API.GetServer(d.Id())
 
 	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			d.SetId("")
+			return nil
+		}
 		return err
 	}
 

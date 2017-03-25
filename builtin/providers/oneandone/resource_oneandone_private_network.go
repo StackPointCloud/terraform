@@ -232,6 +232,10 @@ func resourceOneandOnePrivateNetworkRead(d *schema.ResourceData, meta interface{
 
 	pn, err := config.API.GetPrivateNetwork(d.Id())
 	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			d.SetId("")
+			return nil
+		}
 		return err
 	}
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/1and1/oneandone-cloudserver-sdk-go"
 	"github.com/hashicorp/terraform/helper/schema"
+	"strings"
 )
 
 func resourceOneandOneFirewallPolicy() *schema.Resource {
@@ -176,6 +177,10 @@ func resourceOneandOneFirewallRead(d *schema.ResourceData, meta interface{}) err
 
 	fw, err := config.API.GetFirewallPolicy(d.Id())
 	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			d.SetId("")
+			return nil
+		}
 		return err
 	}
 

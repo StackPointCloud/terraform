@@ -84,6 +84,10 @@ func resourceOneandOnePublicIpRead(d *schema.ResourceData, meta interface{}) err
 
 	ip, err := config.API.GetPublicIp(d.Id())
 	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			d.SetId("")
+			return nil
+		}
 		return err
 	}
 
