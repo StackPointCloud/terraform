@@ -141,7 +141,24 @@ func validateElbName(v interface{}, k string) (ws []string, errors []error) {
 			"%q cannot end with a hyphen: %q", k, value))
 	}
 	return
+}
 
+func validateElbNamePrefix(v interface{}, k string) (ws []string, errors []error) {
+	value := v.(string)
+	if !regexp.MustCompile(`^[0-9A-Za-z-]+$`).MatchString(value) {
+		errors = append(errors, fmt.Errorf(
+			"only alphanumeric characters and hyphens allowed in %q: %q",
+			k, value))
+	}
+	if len(value) > 6 {
+		errors = append(errors, fmt.Errorf(
+			"%q cannot be longer than 6 characters: %q", k, value))
+	}
+	if regexp.MustCompile(`^-`).MatchString(value) {
+		errors = append(errors, fmt.Errorf(
+			"%q cannot begin with a hyphen: %q", k, value))
+	}
+	return
 }
 
 func validateEcrRepositoryName(v interface{}, k string) (ws []string, errors []error) {
@@ -947,7 +964,19 @@ func validateAccountAlias(v interface{}, k string) (ws []string, es []error) {
 	if strings.HasSuffix(val, "-") {
 		es = append(es, fmt.Errorf("%q must not end in a hyphen", k))
 	}
+	return
+}
 
+func validateApiGatewayApiKeyValue(v interface{}, k string) (ws []string, errors []error) {
+	value := v.(string)
+	if len(value) < 30 {
+		errors = append(errors, fmt.Errorf(
+			"%q must be at least 30 characters long", k))
+	}
+	if len(value) > 128 {
+		errors = append(errors, fmt.Errorf(
+			"%q cannot be longer than 128 characters", k))
+	}
 	return
 }
 
