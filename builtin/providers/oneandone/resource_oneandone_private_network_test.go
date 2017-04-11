@@ -113,10 +113,10 @@ func testAccCheckOneandonePrivateNetworkExists(n string, server *oneandone.Priva
 
 const testAccCheckOneandonePrivateNetwork_basic = `
 resource "oneandone_server" "server1" {
-  name = "server1"
+  name = "server01"
   description = "ttt"
-  image = "centos6-64min"
-  datacenter = "GB"
+  image = "centos"
+  datacenter = "US"
   vcores = 1
   cores_per_processor = 1
   ram = 2
@@ -130,10 +130,10 @@ resource "oneandone_server" "server1" {
 }
 
 resource "oneandone_server" "server2" {
-  name = "server2"
+  name = "server02"
   description = "ttt"
-  image = "centos6-64min"
-  datacenter = "GB"
+  image = "centos"
+  datacenter = "US"
   vcores = 1
   cores_per_processor = 1
   ram = 2
@@ -146,82 +146,15 @@ resource "oneandone_server" "server2" {
   ]
 }
 
-resource "oneandone_server" "server3" {
-  name = "server3"
-  description = "ttt"
-  image = "centos6-64min"
-  datacenter = "GB"
-  vcores = 1
-  cores_per_processor = 1
-  ram = 2
-  password = "${oneandone_server.server2.password}"
-  hdds = [
-    {
-      disk_size = 60
-      is_main = true
-    }
-  ]
-}
-
-resource "oneandone_server" "server4" {
-  name = "server4"
-  description = "ttt"
-  image = "centos6-64min"
-  datacenter = "GB"
-  vcores = 1
-  cores_per_processor = 1
-  ram = 2
-  password = "${oneandone_server.server3.password}"
-  hdds = [
-    {
-      disk_size = 60
-      is_main = true
-    }
-  ]
-}
-
-resource "oneandone_server" "server5" {
-  name = "server5"
-  description = "ttt"
-  image = "centos6-64min"
-  datacenter = "GB"
-  vcores = 1
-  cores_per_processor = 1
-  ram = 2
-  password = "${oneandone_server.server4.password}"
-  hdds = [
-    {
-      disk_size = 60
-      is_main = true
-    }
-  ]
-}
-
-resource "oneandone_server" "server6" {
-  name = "server6"
-  description = "ttt"
-  image = "centos6-64min"
-  datacenter = "GB"
-  vcores = 1
-  cores_per_processor = 1
-  ram = 2
-  password = "${oneandone_server.server5.password}"
-  hdds = [
-    {
-      disk_size = 60
-      is_main = true
-    }
-  ]
-}
-
 resource "oneandone_private_network" "pn" {
   name = "%s",
-  description = "new stuff001"
+  description = "new private net"
   datacenter = "GB"
   network_address = "192.168.7.0"
   subnet_mask = "255.255.255.0"
     server_ids = [
-      "${oneandone_server.server1.id}"
+      "${oneandone_server.server1.id}",
+      "${oneandone_server.server2.id}"
     ]
 }
 `

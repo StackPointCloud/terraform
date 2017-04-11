@@ -14,7 +14,7 @@ import (
 func TestAccOneandoneSharedStorage_Basic(t *testing.T) {
 	var storage oneandone.SharedStorage
 
-	name := "test"
+	name := "test_storage"
 	name_updated := "test1"
 
 	resource.Test(t, resource.TestCase{
@@ -114,7 +114,7 @@ func testAccCheckOneandoneSharedStorageExists(n string, storage *oneandone.Share
 const testAccCheckOneandoneSharedStorage_basic = `
 resource "oneandone_shared_storage" "storage" {
 	name = "%s"
-	description = "1234"
+	description = "ttt"
 	size = 50
 	datacenter = "GB"
 }`
