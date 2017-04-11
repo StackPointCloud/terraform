@@ -128,6 +128,7 @@ resource "oneandone_server" "server1" {
     }
   ]
 }
+
 resource "oneandone_server" "server2" {
   name = "server2"
   description = "ttt"
