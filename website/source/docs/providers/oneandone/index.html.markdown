@@ -8,7 +8,7 @@ description: |-
 
 # 1&1 Provider
 
-The 1&1 provider gives the ability to deploy and configure resources using 1&1 Cloud Server API.
+The 1&1 provider gives the ability to deploy and configure resources using the 1&1 Cloud Server API.
 
 Use the navigation to the left to read about the available resources.
 
