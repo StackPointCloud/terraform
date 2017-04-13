@@ -123,7 +123,7 @@ The following arguments are supported:
 * `name` - (Required) [string] The name of the VPN.
 * `description` - (Optional) [string] Description for the VPN
 * `email` - (Optional) [String]  Email address to which notifications monitoring system will send
-* `agent- (Required)[Boolean] Indicates which monitoring type will be used. True - this monitoring type, you must install an agent on the server.  False - monitor a server without installing an agent, then you cannot retrieve information such as free hard disk space or ongoing process.
+* `agent- (Required)[Boolean] Indicates which monitoring type will be used. True: To use this monitoring type, you must install an agent on the server.  False: Monitor a server without installing an agent. Note: If you do not install an agent, you cannot retrieve information such as free hard disk space or ongoing processes.
 
 Monitoring Policy Thresholds (`thresholds`) support the following:
 
